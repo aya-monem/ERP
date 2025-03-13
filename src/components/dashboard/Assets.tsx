@@ -100,75 +100,71 @@ export default function Assets() {
     },
     {
       id: "AST-1002",
-      name: "Forklift #3",
-      type: "Equipment",
-      facility: "Warehouse",
+      name: "Office Printer - IT Room",
+      type: "IT Equipment",
+      facility: "Admin Building",
       status: "Operational",
-      lastMaintenance: "2023-05-20",
-      nextMaintenance: "2023-11-20",
-      purchaseDate: "2021-03-15",
-      value: "$18,500",
+      lastMaintenance: "2024-02-10",
+      nextMaintenance: "2024-08-10",
+      purchaseDate: "2022-05-20",
+      value: "$3,500",
       condition: "Good",
-      manufacturer: "Toyota",
-      model: "8FGU25",
-      serialNumber: "TYT-8FGU25-12345",
+      description: "High-speed office printer for IT department",
+      manufacturer: "HP",
+      model: "LaserJet Pro MFP",
+      serialNumber: "HP-2022-45812",
+      warrantyExpiration: "2027-05-20",
     },
     {
       id: "AST-1003",
-      name: "Conference Room A/V System",
-      type: "Electronics",
-      facility: "Office Building",
-      status: "Under Repair",
-      lastMaintenance: "2023-04-10",
-      nextMaintenance: "2023-10-10",
-      purchaseDate: "2022-01-05",
-      value: "$12,000",
-      condition: "Fair",
-      description: "Audio/visual system for the main conference room",
+      name: "Backup Generator - Parking Lot",
+      type: "Power Equipment",
+      facility: "Utility Section",
+      status: "Operational",
+      lastMaintenance: "2023-11-01",
+      nextMaintenance: "2024-05-01",
+      purchaseDate: "2019-12-15",
+      value: "$45,000",
+      condition: "Excellent",
+      description: "Emergency backup generator for power outages",
+      manufacturer: "Cummins",
+      model: "C250D6",
+      serialNumber: "CUM-2019-89456",
+      warrantyExpiration: "2029-12-15",
     },
     {
       id: "AST-1004",
-      name: "Backup Generator",
-      type: "Power",
+      name: "CCTV Surveillance System",
+      type: "Security",
       facility: "Main Building",
-      status: "Operational",
-      lastMaintenance: "2023-06-01",
-      nextMaintenance: "2023-12-01",
-      purchaseDate: "2019-11-20",
-      value: "$35,000",
-      condition: "Good",
-      manufacturer: "Generac",
-      model: "SG080",
-      serialNumber: "GEN-SG080-45678",
+      status: "Needs Maintenance",
+      lastMaintenance: "2024-01-20",
+      nextMaintenance: "2024-07-20",
+      purchaseDate: "2021-09-30",
+      value: "$12,000",
+      condition: "Fair",
+      description: "Building-wide CCTV security system with 24 cameras",
+      manufacturer: "Hikvision",
+      model: "DS-2CD2347G2-LU",
+      serialNumber: "HIK-2021-75489",
+      warrantyExpiration: "2026-09-30",
     },
     {
       id: "AST-1005",
-      name: "Security Camera System",
-      type: "Security",
-      facility: "Warehouse",
+      name: "Fire Alarm System - West Wing",
+      type: "Safety Equipment",
+      facility: "West Wing",
       status: "Operational",
-      lastMaintenance: "2023-05-15",
-      nextMaintenance: "2023-11-15",
-      purchaseDate: "2021-09-30",
-      value: "$8,200",
-      condition: "Excellent",
-      manufacturer: "Hikvision",
-      model: "DS-2CD2T85G1",
-    },
-    {
-      id: "AST-1006",
-      name: "Elevator #2",
-      type: "Transportation",
-      facility: "Main Building",
-      status: "Operational",
-      lastMaintenance: "2023-04-05",
-      nextMaintenance: "2023-10-05",
+      lastMaintenance: "2024-03-05",
+      nextMaintenance: "2024-09-05",
       purchaseDate: "2018-07-12",
-      value: "$45,000",
+      value: "$15,000",
       condition: "Good",
-      manufacturer: "Otis",
-      model: "Gen2",
-      serialNumber: "OT-GEN2-98765",
+      description: "Fire alarm and smoke detection system for the west wing",
+      manufacturer: "Siemens",
+      model: "FS9200",
+      serialNumber: "SIE-2018-69874",
+      warrantyExpiration: "2028-07-12",
     },
   ]);
 
@@ -379,11 +375,14 @@ export default function Assets() {
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="HVAC">HVAC</SelectItem>
-                  <SelectItem value="Equipment">Equipment</SelectItem>
-                  <SelectItem value="Electronics">Electronics</SelectItem>
-                  <SelectItem value="Power">Power</SelectItem>
+                  <SelectItem value="IT Equipment">IT Equipment</SelectItem>
+                  <SelectItem value="Power Equipment">
+                    Power Equipment
+                  </SelectItem>
                   <SelectItem value="Security">Security</SelectItem>
-                  <SelectItem value="Transportation">Transportation</SelectItem>
+                  <SelectItem value="Safety Equipment">
+                    Safety Equipment
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -407,10 +406,11 @@ export default function Assets() {
                 <SelectContent>
                   <SelectItem value="all">All Facilities</SelectItem>
                   <SelectItem value="Main Building">Main Building</SelectItem>
-                  <SelectItem value="Warehouse">Warehouse</SelectItem>
-                  <SelectItem value="Office Building">
-                    Office Building
+                  <SelectItem value="Admin Building">Admin Building</SelectItem>
+                  <SelectItem value="Utility Section">
+                    Utility Section
                   </SelectItem>
+                  <SelectItem value="West Wing">West Wing</SelectItem>
                 </SelectContent>
               </Select>
               <Button
