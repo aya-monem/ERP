@@ -31,6 +31,11 @@ interface WorkOrdersTableProps {
   priorityFilter?: string;
   facilityFilter?: string;
   activeTab?: string;
+  onViewDetails?: (workOrder: WorkOrder) => void;
+  onEdit?: (workOrder: WorkOrder) => void;
+  onReschedule?: (workOrder: WorkOrder) => void;
+  onMarkComplete?: (workOrder: WorkOrder) => void;
+  onDelete?: (workOrderId: string) => void;
 }
 
 export function WorkOrdersTable({
@@ -40,6 +45,11 @@ export function WorkOrdersTable({
   priorityFilter = "all",
   facilityFilter = "all",
   activeTab = "all",
+  onViewDetails,
+  onEdit,
+  onReschedule,
+  onMarkComplete,
+  onDelete,
 }: WorkOrdersTableProps) {
   const getPriorityColor = (priority: WorkOrder["priority"]) => {
     switch (priority) {
@@ -201,25 +211,42 @@ export function WorkOrdersTable({
                         align="end"
                         className="border-[#e0e0e0]"
                       >
-                        <DropdownMenuItem className="text-[#424242] focus:bg-[#f5f5f5] focus:text-[#1976d2]">
+                        <DropdownMenuItem
+                          className="text-[#424242] focus:bg-[#f5f5f5] focus:text-[#1976d2] cursor-pointer"
+                          onClick={() => onViewDetails && onViewDetails(order)}
+                        >
                           <Eye className="mr-2 h-4 w-4 text-[#1976d2]" />
                           View Details
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-[#424242] focus:bg-[#f5f5f5] focus:text-[#4caf50]">
+                        <DropdownMenuItem
+                          className="text-[#424242] focus:bg-[#f5f5f5] focus:text-[#4caf50] cursor-pointer"
+                          onClick={() => onEdit && onEdit(order)}
+                        >
                           <Edit className="mr-2 h-4 w-4 text-[#4caf50]" />
                           Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-[#424242] focus:bg-[#f5f5f5] focus:text-[#ff9800]">
+                        <DropdownMenuItem
+                          className="text-[#424242] focus:bg-[#f5f5f5] focus:text-[#ff9800] cursor-pointer"
+                          onClick={() => onReschedule && onReschedule(order)}
+                        >
                           <Calendar className="mr-2 h-4 w-4 text-[#ff9800]" />
                           Reschedule
                         </DropdownMenuItem>
                         {order.status !== "Completed" && (
-                          <DropdownMenuItem className="text-[#424242] focus:bg-[#f5f5f5] focus:text-[#4caf50]">
+                          <DropdownMenuItem
+                            className="text-[#424242] focus:bg-[#f5f5f5] focus:text-[#4caf50] cursor-pointer"
+                            onClick={() =>
+                              onMarkComplete && onMarkComplete(order)
+                            }
+                          >
                             <CheckCircle className="mr-2 h-4 w-4 text-[#4caf50]" />
                             Mark Complete
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuItem className="text-[#f44336] focus:bg-[#ffebee] focus:text-[#d32f2f]">
+                        <DropdownMenuItem
+                          className="text-[#f44336] focus:bg-[#ffebee] focus:text-[#d32f2f] cursor-pointer"
+                          onClick={() => onDelete && onDelete(order.id)}
+                        >
                           <Trash2 className="mr-2 h-4 w-4" />
                           Delete
                         </DropdownMenuItem>

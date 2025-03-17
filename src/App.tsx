@@ -12,6 +12,12 @@ const Assets = lazy(() => import("./components/dashboard/Assets"));
 const Inventory = lazy(() => import("./components/dashboard/Inventory"));
 const Reports = lazy(() => import("./components/dashboard/Reports"));
 const Settings = lazy(() => import("./components/dashboard/Settings"));
+const MaintenanceWorkflowPage = lazy(
+  () => import("./components/dashboard/MaintenanceWorkflowPage"),
+);
+const TechniciansPage = lazy(
+  () => import("./components/dashboard/TechniciansPage"),
+);
 
 function App() {
   return (
@@ -98,6 +104,22 @@ function App() {
             element={
               <AuthGuard>
                 <Settings />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/maintenance"
+            element={
+              <AuthGuard>
+                <MaintenanceWorkflowPage />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/technicians"
+            element={
+              <AuthGuard>
+                <TechniciansPage />
               </AuthGuard>
             }
           />

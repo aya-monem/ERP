@@ -12,6 +12,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Package,
+  Wrench,
+  Users,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -39,6 +41,12 @@ export function Sidebar({ className }: SidebarProps) {
       active: currentPath === "/work-orders",
     },
     {
+      icon: Wrench,
+      label: "Maintenance",
+      path: "/maintenance",
+      active: currentPath === "/maintenance",
+    },
+    {
       icon: Building,
       label: "Facilities",
       path: "/facilities",
@@ -55,6 +63,12 @@ export function Sidebar({ className }: SidebarProps) {
       label: "Inventory",
       path: "/inventory",
       active: currentPath === "/inventory",
+    },
+    {
+      icon: Users,
+      label: "Technicians",
+      path: "/technicians",
+      active: currentPath === "/technicians",
     },
     {
       icon: BarChart2,

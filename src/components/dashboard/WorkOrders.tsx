@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WorkOrdersTable from "./WorkOrdersTable";
 import { Plus, Filter, Search } from "lucide-react";
 import AddWorkOrderModal from "./modals/AddWorkOrderModal";
+import ViewWorkOrderModal from "./modals/ViewWorkOrderModal";
+import EditWorkOrderModal from "./modals/EditWorkOrderModal";
 
 export interface WorkOrder {
   id: string;
@@ -23,14 +26,23 @@ export interface WorkOrder {
   status: "Open" | "In Progress" | "On Hold" | "Completed";
   assignedTo: string;
   dueDate: string;
+  requestId?: string;
 }
 
 export default function WorkOrders() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [facilityFilter, setFacilityFilter] = useState("all");
   const [isAddWorkOrderModalOpen, setIsAddWorkOrderModalOpen] = useState(false);
+  const [isViewWorkOrderModalOpen, setIsViewWorkOrderModalOpen] =
+    useState(false);
+  const [isEditWorkOrderModalOpen, setIsEditWorkOrderModalOpen] =
+    useState(false);
+  const [selectedWorkOrder, setSelectedWorkOrder] = useState<WorkOrder | null>(
+    null,
+  );
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>([
     {
       id: "WO-1001",
@@ -40,6 +52,7 @@ export default function WorkOrders() {
       status: "In Progress",
       assignedTo: "Mike Johnson",
       dueDate: "2023-06-15",
+      requestId: "REQ-1002",
     },
     {
       id: "WO-1002",
@@ -81,9 +94,60 @@ export default function WorkOrders() {
       dueDate: workOrderData.dueDate
         ? workOrderData.dueDate.toISOString().split("T")[0]
         : new Date().toISOString().split("T")[0],
+      requestId: workOrderData.requestId,
     };
 
     setWorkOrders([newWorkOrder, ...workOrders]);
+  };
+
+  const handleViewWorkOrder = (workOrder: WorkOrder) => {
+    setSelectedWorkOrder(workOrder);
+    setIsViewWorkOrderModalOpen(true);
+  };
+
+  const handleEditWorkOrder = (workOrder: WorkOrder) => {
+    setSelectedWorkOrder(workOrder);
+    setIsEditWorkOrderModalOpen(true);
+  };
+
+  const handleUpdateWorkOrder = (updatedWorkOrder: WorkOrder) => {
+    const updatedWorkOrders = workOrders.map((order) =>
+      order.id === updatedWorkOrder.id ? updatedWorkOrder : order,
+    );
+    setWorkOrders(updatedWorkOrders);
+  };
+
+  const handleRescheduleWorkOrder = (workOrder: WorkOrder) => {
+    // For simplicity, we'll just open the edit modal
+    handleEditWorkOrder(workOrder);
+  };
+
+  const handleMarkComplete = (workOrder: WorkOrder) => {
+    const updatedWorkOrder = { ...workOrder, status: "Completed" as const };
+    handleUpdateWorkOrder(updatedWorkOrder);
+  };
+
+  const handleDeleteWorkOrder = (workOrderId: string) => {
+    const updatedWorkOrders = workOrders.filter(
+      (order) => order.id !== workOrderId,
+    );
+    setWorkOrders(updatedWorkOrders);
+  };
+
+  // Function to get status color for badges
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Open":
+        return "bg-[#e3f2fd] text-[#1976d2] border-[#1976d2]";
+      case "In Progress":
+        return "bg-[#fff3e0] text-[#ff9800] border-[#ff9800]";
+      case "On Hold":
+        return "bg-[#f5f5f5] text-[#9e9e9e] border-[#9e9e9e]";
+      case "Completed":
+        return "bg-[#e8f5e9] text-[#4caf50] border-[#4caf50]";
+      default:
+        return "";
+    }
   };
 
   return (
@@ -188,6 +252,12 @@ export default function WorkOrders() {
                 variant="outline"
                 size="icon"
                 className="border-[#e0e0e0] text-[#757575] hover:bg-[#f5f5f5] hover:text-[#424242]"
+                onClick={() => {
+                  setSearchQuery("");
+                  setPriorityFilter("all");
+                  setFacilityFilter("all");
+                  setActiveTab("all");
+                }}
               >
                 <Filter className="h-4 w-4" />
               </Button>
@@ -201,6 +271,11 @@ export default function WorkOrders() {
             priorityFilter={priorityFilter}
             facilityFilter={facilityFilter}
             activeTab={activeTab}
+            onViewDetails={handleViewWorkOrder}
+            onEdit={handleEditWorkOrder}
+            onReschedule={handleRescheduleWorkOrder}
+            onMarkComplete={handleMarkComplete}
+            onDelete={handleDeleteWorkOrder}
           />
         </main>
       </div>
@@ -210,6 +285,23 @@ export default function WorkOrders() {
         onOpenChange={setIsAddWorkOrderModalOpen}
         onAddWorkOrder={handleAddWorkOrder}
       />
+
+      {selectedWorkOrder && (
+        <>
+          <ViewWorkOrderModal
+            open={isViewWorkOrderModalOpen}
+            onOpenChange={setIsViewWorkOrderModalOpen}
+            workOrder={selectedWorkOrder}
+          />
+
+          <EditWorkOrderModal
+            open={isEditWorkOrderModalOpen}
+            onOpenChange={setIsEditWorkOrderModalOpen}
+            workOrder={selectedWorkOrder}
+            onUpdateWorkOrder={handleUpdateWorkOrder}
+          />
+        </>
+      )}
     </div>
   );
 }
